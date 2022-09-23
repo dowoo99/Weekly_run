@@ -32,7 +32,7 @@ jobs:
           aws-region: ${{ secrets.REACT_APP_AWS_REGION }}
 
       - name: Deploy to S3
-        run: aws s3 sync ./dist s3://${{ secrets.REACT_APP_AWS_S3_BUCKET }} --delete
+        run: aws s3 sync ./build s3://${{ secrets.REACT_APP_BUCKET_NAME }} --delete
 
       - name: Invalidate CloudFront Cache
         run: aws cloudfront create-invalidation --distribution-id ${{secrets.REACT_APP_AWS_DISTRIBUTION_ID}} --paths "/*"
