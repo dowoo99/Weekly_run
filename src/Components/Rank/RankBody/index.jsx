@@ -24,7 +24,6 @@ const RankBody = ({ rankData }) => {
     });
   };
 
-  console.log(rankData);
   return (
     <RankListWrap>
       {rankData?.map((ranking, idx) => {
