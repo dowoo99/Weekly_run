@@ -21,6 +21,16 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
+      - name: Setting .env
+        run: 
+        echo "REACT_APP_AWS_IMAGE_ACCESS_KEY_ID=${{ secrets.REACT_APP_AWS_IMAGE_ACCESS_KEY_ID}}" >> .env
+        echo "REACT_APP_IMAGE_AWS_SECRET_ACCESS_KEY=${{ secrets.REACT_APP_IMAGE_AWS_SECRET_ACCESS_KEY}}" >> .env
+        echo "REACT_APP_IMAGE_BUCKET_NAME=${{ secrets.REACT_APP_IMAGE_BUCKET_NAME}}" >> .env
+        echo "REACT_APP_IMAGE_REGION=${{ secrets.REACT_APP_IMAGE_REGION}}" >> .env
+        echo "REACT_APP_KAKAOMAP_API_KEY=${{ secrets.REACT_APP_KAKAOMAP_API_KEY}}" >> .env
+        echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL}}" >> .env
+        echo "PUBLIC_URLL=${{ secrets.PUBLIC_URL}}" >> .env
+
       - name: Build
         run: yarn build
 
