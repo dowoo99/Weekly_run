@@ -7,6 +7,7 @@ import Goal from "../Components/Userpage/Goal";
 import EventModal from "../Components/Common/EventModal";
 
 import { useProgress } from "../Hooks/useProgress";
+import { useGetUserData } from "../Hooks/useGetUserData";
 import { useLocation, useParams } from "react-router-dom";
 import { useState } from "react";
 import { instance } from "../Utils/Instance";
@@ -21,13 +22,14 @@ const UserPage = () => {
   const userProfile = parseData.image;
   const userId = parseData.userId;
 
-  const [userIds, SetUserId] = useState(state?.userId || userId);
+  const [userIds, SetUserId] = useState(state?.userId);
 
   const { data: goalData } = useProgress(userIds); //user 목표보여주기
+  const { data: userData } = useGetUserData(userIds);
 
   useEffect(() => {
     if (state?.userId === undefined) {
-      return SetUserId(userId);
+      SetUserId(userId);
     }
   }, [state?.userId]);
 
@@ -43,7 +45,7 @@ const UserPage = () => {
     <>
       {!showEventModal && <EventModal />}
       <Layout>
-        <Userprofile userProfile={userProfile} goalData={goalData} userNickname={userNickname}></Userprofile>
+        <Userprofile userProfile={userProfile} userData={userData} userNickname={userNickname}></Userprofile>
         {goalData?.result ? (
           <Progress done={goalData?.result} goalData={goalData}></Progress>
         ) : (

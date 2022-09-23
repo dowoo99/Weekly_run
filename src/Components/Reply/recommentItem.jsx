@@ -11,10 +11,13 @@ import { ReactComponent as Profile } from "../../Icons/myPageProfile.svg";
 import { useRecoilState } from "recoil";
 import { replyState } from "../../Recoil/Atoms/ReplyAtoms";
 import Modal from "../Common/Modal/Modal";
+import Lottie from "lottie-react";
+import LeftArrow from "../../Lottie/LeftArrow.json";
 
 function RecommentItem({ data }) {
   const [inputState, setInputState] = useRecoilState(replyState);
   const [showModal, setShowModal] = useState(false);
+  const [showArrow, setShowArrow] = useState(false);
   const queryClient = useQueryClient();
 
   //대댓글 삭제
@@ -49,10 +52,14 @@ function RecommentItem({ data }) {
   const [firstTouchX, setFirstTouchX] = useState("");
 
   const onTouchStart = e => {
-    setFirstTouchX(e.changedTouches[0].pageX);
+    if (userData.nickname === data.nickname) {
+      setFirstTouchX(e.changedTouches[0].pageX);
+      setShowArrow(true);
+    }
   };
 
   const onTouchEnd = e => {
+    setShowArrow(false);
     if (userData.nickname !== data.nickname) return;
     let totalX = e.changedTouches[0].pageX - firstTouchX;
     if (200 > totalX || 400 > totalX > 300) {
@@ -85,6 +92,11 @@ function RecommentItem({ data }) {
               <div>{displayedAt(data.createdAt)}</div>
             </RecommentFooter>
           </RecommentBody>
+          {showArrow && (
+            <LottieWrap>
+              <Lottie animationData={LeftArrow} />
+            </LottieWrap>
+          )}
         </RecommentBox>
         {data.nickname === userData.nickname && (
           <ButtonWrap>
@@ -113,6 +125,15 @@ const Body = styled.div`
   width: 100%;
   margin-left: 3rem;
   transition: all 0.5s ease-in-out;
+  align-items: center;
+`;
+
+const LottieWrap = styled.div`
+  position: relative;
+  right: -16rem;
+  top: -3rem;
+  width: 25.5%;
+  height: 50%;
 `;
 
 const Nick = styled.div`
@@ -126,10 +147,6 @@ const ButtonWrap = styled.div`
   display: flex;
   & button {
     border: none;
-    background-color: rgba(0, 0, 0, 0.25);
-  }
-  & button:last-child {
-    background-color: #f03800;
   }
 `;
 

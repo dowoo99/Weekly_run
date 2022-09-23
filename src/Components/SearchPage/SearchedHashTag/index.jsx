@@ -61,12 +61,12 @@ const SearchedHashTag = ({ searhValue }) => {
         {data?.pages.map((page, index) => (
           <div key={index}>
             {page?.Post.map((posts, index) => (
-              <PostBox key={index} posts={posts} index={index}></PostBox>
+              <PostBox key={index} posts={posts} index={index} />
             ))}
           </div>
         ))}
       </div>
-      {isFetchingNextPage ? <span>로딩중입니다</span> : <div ref={ref}></div>}
+      {isFetchingNextPage ? <span></span> : <div ref={ref}></div>}
     </Body>
   );
 };

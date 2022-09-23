@@ -6,7 +6,7 @@ import RelatedBar from "../Components/SearchPage/RelatedBar";
 import SearchedHashTag from "../Components/SearchPage/SearchedHashTag";
 import SearchedUser from "../Components/SearchPage/SearchedUser";
 import useInput from "../Hooks/useInput";
-import Nav from "../Components/Common/Nav";
+import Layout from "../Components/Common/Layout";
 
 import { ReactComponent as SearchIcon } from "../Icons/SearchIcon.svg";
 
@@ -44,7 +44,7 @@ const Search = () => {
   );
 
   return (
-    <>
+    <Layout show={false}>
       <SearchHead onSubmit={onSubmitSearch}>
         <SearchTerm
           type="text"
@@ -81,8 +81,7 @@ const Search = () => {
       </TapWrap>
       {selectedTab === "유저" && <SearchedUser searhValue={searhValue} />}
       {selectedTab === "태그" && <SearchedHashTag searhValue={searhValue} />}
-      <Nav />
-    </>
+    </Layout>
   );
 };
 

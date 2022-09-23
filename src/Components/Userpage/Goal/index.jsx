@@ -8,6 +8,7 @@ import Modal from "../Modal";
 const Goal = ({ userNickname, done }) => {
   const [modal, setModal] = useRecoilState(ModalState);
   const { nickname } = useParams();
+
   return (
     <>
       {nickname === userNickname ? (
@@ -24,7 +25,11 @@ const Goal = ({ userNickname, done }) => {
             <div>이번주 목표를 입력하세요</div>
           </StyleGoal>
         </div>
-      ) : null}
+      ) : (
+        <StyleGoal>
+          <div>아직 목표를 설정하지 않았어요</div>
+        </StyleGoal>
+      )}
     </>
   );
 };

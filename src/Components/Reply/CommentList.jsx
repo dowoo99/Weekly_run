@@ -12,11 +12,14 @@ import { ReactComponent as Profile } from "../../Icons/myPageProfile.svg";
 import { useRecoilState } from "recoil";
 import { replyState } from "../../Recoil/Atoms/ReplyAtoms";
 import Modal from "../Common/Modal/Modal";
+import Lottie from "lottie-react";
+import LeftArrow from "../../Lottie/LeftArrow.json";
 
 const CommentList = ({ reply }) => {
   const [showReply, setShowReply] = useState(false);
   const [inputState, setInpuState] = useRecoilState(replyState);
   const [showModal, setShowModal] = useState(false);
+  const [showArrow, setShowArrow] = useState(false);
 
   const userData = JSON.parse(window.localStorage.getItem("userData"));
 
@@ -69,19 +72,25 @@ const CommentList = ({ reply }) => {
   const [firstTouchX, setFirstTouchX] = useState("");
 
   const onTouchStart = e => {
-    setFirstTouchX(e.changedTouches[0].pageX);
+    if (userData.nickname === reply.nickname) {
+      setFirstTouchX(e.changedTouches[0].pageX);
+      setShowArrow(true);
+    }
   };
 
   const onTouchEnd = e => {
+    setShowArrow(false);
     if (userData.nickname !== reply.nickname) return;
     let totalX = firstTouchX - e.changedTouches[0].pageX;
 
     if (totalX > 80) {
       slideRef.current.style.transform = "translateX(-13rem)";
+
       return;
     }
     if (totalX < -10) {
       slideRef.current.style.transform = "translateX(0%)";
+
       return;
     }
   };
@@ -113,16 +122,23 @@ const CommentList = ({ reply }) => {
               {showReply && <div onClick={onShowRecomment}>답글 닫기</div>}
             </CommentFooter>
           </CommentBody>
+          {showArrow && (
+            <LottieWrap>
+              <Lottie animationData={LeftArrow} />
+            </LottieWrap>
+          )}
         </CommentWrap>
         {reply.nickname === userData.nickname && (
-          <ButtonWrap>
-            <button onClick={onShowInputEdit}>
-              <ReplyUpdate />
-            </button>
-            <button onClick={onShowModal}>
-              <ReplyDelete />
-            </button>
-          </ButtonWrap>
+          <>
+            <ButtonWrap>
+              <button onClick={onShowInputEdit}>
+                <ReplyUpdate />
+              </button>
+              <button onClick={onShowModal}>
+                <ReplyDelete />
+              </button>
+            </ButtonWrap>
+          </>
         )}
       </Body>
       {showReply && <Recomment id={reply.commentId} />}
@@ -141,16 +157,21 @@ const Body = styled.div`
   display: flex;
   width: 100%;
   transition: all 0.5s ease-in-out;
+  align-items: center;
+`;
+
+const LottieWrap = styled.div`
+  position: relative;
+  right: -3rem;
+  top: -3rem;
+  width: 25.5%;
+  height: 50%;
 `;
 
 const ButtonWrap = styled.div`
   display: flex;
   & button {
     border: none;
-    background-color: rgba(0, 0, 0, 0.25);
-  }
-  & button:last-child {
-    background-color: #f03800;
   }
 `;
 
@@ -188,6 +209,7 @@ const CommentBody = styled.div`
   align-items: flex-start;
   gap: 0.2rem;
   height: 4.2rem;
+  width: 70%;
 `;
 
 const Nick = styled.div`
