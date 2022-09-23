@@ -125,7 +125,7 @@ function ProfileUpload({ userData }) {
   }, [debounceNick]);
 
   return (
-    <>
+    <Body>
       <label>
         <Image src={previewImage}></Image>
         <CameraIcon>
@@ -142,11 +142,19 @@ function ProfileUpload({ userData }) {
       <JoinBtn onClick={onSubmitProfile} disabled={error}>
         <p>가입하기</p>
       </JoinBtn>
-    </>
+    </Body>
   );
 }
 
 export default ProfileUpload;
+
+const Body = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+`;
 
 const Image = styled.img`
   width: 16rem;
@@ -188,7 +196,7 @@ const NickForm = styled.p`
   color: #b3b3b3;
 `;
 
-const JoinBtn = styled.div`
+const JoinBtn = styled.button`
   display: flex;
   justify-content: center;
   position: absolute;
