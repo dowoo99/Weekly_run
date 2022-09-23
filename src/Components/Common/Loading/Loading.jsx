@@ -1,5 +1,5 @@
 import Lottie from "lottie-react";
-import Loader from "./LoadingLottie.json";
+import Loader from "../../../Lottie/LoadingLottie.json";
 import styled from "styled-components";
 
 const Loading = ({ children }) => {

@@ -1,8 +1,11 @@
 import React, { useCallback } from "react";
 import styled from "styled-components";
 import { ReactComponent as Profile } from "../../../Icons/myPageProfile.svg";
+import { useNavigate } from "react-router-dom";
 
 const RankBody = ({ rankData }) => {
+  const navigate = useNavigate();
+
   const divideTime = useCallback(time => {
     let seconds = Math.floor(time % 60);
     let minute = Math.floor((time / 60) % 60);
@@ -15,11 +18,17 @@ const RankBody = ({ rankData }) => {
     return hours + ":" + minute + ":" + seconds;
   }, []);
 
+  const goToUser = (nickname, userId) => {
+    navigate(`/user/${nickname}`, {
+      state: { userId: userId }
+    });
+  };
+
   return (
     <RankListWrap>
       {rankData?.map((ranking, idx) => {
         return (
-          <RankList key={idx}>
+          <RankList key={idx} onClick={() => goToUser(ranking.nickname, ranking.userId)}>
             <tr>
               <td>
                 <div>{idx + 1}</div>

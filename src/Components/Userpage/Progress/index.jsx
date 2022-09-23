@@ -15,7 +15,9 @@ import {
   StyleSpanDistance,
   StyleSpanTime
 } from "./style";
+import { useParams } from "react-router-dom";
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
+
 import "react-circular-progressbar/dist/styles.css";
 import moment from "moment";
 import { ModalState } from "../../../Recoil/Atoms/OptionAtoms";
@@ -25,13 +27,18 @@ import Modal from "../Modal/index";
 import { Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
+
 const weekOfMonth = m => m.week() - moment(m).startOf("month").week() + 1;
 const nowDate = moment().utc(true);
 const goalDate = nowDate.format("MM월 ") + weekOfMonth(nowDate) + "주차"; // 현재 날짜
+
 const Progress = ({ goalData, done }) => {
   const [modal, setModal] = useRecoilState(ModalState);
+
   const sevenTime = goalData.getUserInfo.weekOfTime;
+
   const result = sevenTime.filter(distance => distance !== 0);
+
   const divideTime = useCallback(time => {
     let seconds = Math.floor(time % 60);
     let minute = Math.floor((time / 60) % 60);
@@ -43,7 +50,13 @@ const Progress = ({ goalData, done }) => {
 
     return hours + ":" + minute + ":" + seconds;
   }, []);
+
   const percentage = goalData.getUserInfo.percent.toFixed(1);
+
+  const parseData = JSON.parse(localStorage.getItem("userData"));
+  const { nickname } = useParams();
+  const userNickname = parseData.nickname;
+
   return (
     <StyleWrap>
       {modal ? <Modal done={done} /> : null}
@@ -63,13 +76,15 @@ const Progress = ({ goalData, done }) => {
                   <div>
                     <StyleProgressGoalData>{goalData.getUserInfo.goal}km 달성까지</StyleProgressGoalData>
                   </div>
-                  <span
-                    onClick={() => {
-                      setModal(true);
-                    }}
-                  >
-                    수정
-                  </span>
+                  {userNickname === nickname && (
+                    <span
+                      onClick={() => {
+                        setModal(true);
+                      }}
+                    >
+                      수정
+                    </span>
+                  )}
                 </StylePutBox>
 
                 <div>

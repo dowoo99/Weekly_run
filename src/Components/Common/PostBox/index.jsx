@@ -73,6 +73,8 @@ const PostBox = ({ posts, index }) => {
     });
   }, []);
 
+  console.log(posts);
+
   return (
     <StyleFeed key={index}>
       <StyleFrofileBox>

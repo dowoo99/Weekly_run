@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import Header from "../Components/Common/Header/index";
+
 import styled from "styled-components";
 
 import ErrorIcon from "../Icons/warning.png";
@@ -16,8 +16,7 @@ const ErrorPage = () => {
   }, []);
 
   return (
-    <>
-      <Header />
+    <Body>
       <IconBox>
         <img src={ErrorIcon} />
       </IconBox>
@@ -33,12 +32,18 @@ const ErrorPage = () => {
         <button onClick={goBack}>이전</button>
         <button onClick={goHome}>홈으로</button>
       </ButtonWrap>
-    </>
+    </Body>
   );
 };
 
 export default ErrorPage;
 
+const Body = styled.div`
+  height: 75vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 const IconBox = styled.div`
   text-align: center;
   margin: 3.5rem 0rem;

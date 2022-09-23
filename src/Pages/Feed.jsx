@@ -4,7 +4,7 @@ import UserfeedList from "../Components/Feed/FeedList/index ";
 
 const Feed = () => {
   return (
-    <Layout feed={true}>
+    <Layout show={true}>
       <UserfeedList></UserfeedList>
     </Layout>
   );
