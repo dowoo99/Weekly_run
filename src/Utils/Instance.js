@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const instance = axios.create({
-  baseURL: "https://yunseong.shop",
+  baseURL: process.env.REACT_APP_API_URL,
   withCredentials: true
 });
 
