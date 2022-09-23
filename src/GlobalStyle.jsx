@@ -21,10 +21,6 @@ const GlobalStyle = createGlobalStyle`
     background-color: white;
   }
 }
-
-
-
-
 `;
 
 export default GlobalStyle;
