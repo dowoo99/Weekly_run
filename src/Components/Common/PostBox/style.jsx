@@ -90,7 +90,7 @@ export const StyleHeart = styled.div`
 `;
 
 export const StyleImg = styled.img`
-  width: 34.3rem;
+  width: 100%;
   height: 18rem;
   object-fit: cover;
 `;
