@@ -19,7 +19,7 @@ function ProfileUpload({ userData }) {
   const [previewImage, setPrevieImage] = useState(Profile);
   const [image, setImage] = useState(null);
   const [isLodded, setIsLodded] = useState("");
-  const [error, setError] = useState(false);
+  const [duplicate, setDuplicate] = useState(false);
 
   const fileUpload = useRef(null);
   const navigate = useNavigate();
@@ -27,6 +27,7 @@ function ProfileUpload({ userData }) {
   const debounceNick = useQueryDebounce(nickname, 500);
 
   const onChangeNickName = e => {
+    setDuplicate(false);
     const { value } = e.target;
     const onlyHangul = value.replace(/[^ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, "");
     setNickname(onlyHangul);
@@ -111,13 +112,13 @@ function ProfileUpload({ userData }) {
   const { mutate: duplicateCheck } = useMutation(nicknameCheck);
 
   useEffect(() => {
-    if (debounceNick) {
+    if (debounceNick.length > 1) {
       duplicateCheck(debounceNick, {
         onSuccess: data => {
           if (data.duplicate) {
-            setError(true);
+            setDuplicate("중복"); // 중복
           } else {
-            setError(false);
+            setDuplicate("통과");
           }
         }
       });
@@ -126,20 +127,22 @@ function ProfileUpload({ userData }) {
 
   return (
     <Body>
-      <label>
-        <Image src={previewImage}></Image>
-        <CameraIcon>
-          <SmallCamera />
-        </CameraIcon>
-        <FileBox type="file" ref={fileUpload} onChange={chgPreview} />
-      </label>
-      <NickNameInput onChange={onChangeNickName} value={nickname} type="text" maxLength={5} minLength={2} />
-      {!error ? (
-        <NickForm>닉네임은 한글 2-5자 이내로 입력해주세요</NickForm>
-      ) : (
-        <NickForm style={{ color: "red" }}>이미 존재하는 닉네임입니다.</NickForm>
-      )}
-      <JoinBtn onClick={onSubmitProfile} disabled={error}>
+      <div>
+        <label>
+          <Image src={previewImage}></Image>
+          <CameraIcon>
+            <SmallCamera />
+          </CameraIcon>
+          <FileBox type="file" ref={fileUpload} onChange={chgPreview} />
+        </label>
+        <NickNameInput onChange={onChangeNickName} value={nickname} type="text" maxLength={5} minLength={2} />
+        {duplicate !== "중복" ? (
+          <NickForm>닉네임은 한글 2-5자 이내로 입력해주세요</NickForm>
+        ) : (
+          <NickForm style={{ color: "red" }}>이미 존재하는 닉네임입니다.</NickForm>
+        )}
+      </div>
+      <JoinBtn onClick={onSubmitProfile} disabled={duplicate !== "통과"}>
         <p>가입하기</p>
       </JoinBtn>
     </Body>
@@ -149,11 +152,12 @@ function ProfileUpload({ userData }) {
 export default ProfileUpload;
 
 const Body = styled.div`
+  height: calc(100vh - 21rem);
   display: flex;
   flex-direction: column;
   text-align: center;
-  justify-content: center;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const Image = styled.img`
@@ -169,9 +173,8 @@ const FileBox = styled.input`
 const CameraIcon = styled.div`
   position: absolute;
   width: 4.8rem;
-  height: 4.8rem;
   left: 21.4rem;
-  top: 34.6rem;
+  top: 34rem;
 `;
 
 const NickNameInput = styled.input`
@@ -199,10 +202,8 @@ const NickForm = styled.p`
 const JoinBtn = styled.button`
   display: flex;
   justify-content: center;
-  position: absolute;
   width: 100%;
   height: 9.7rem;
-  bottom: 0rem;
   background: #4d4d4d;
   & p {
     font-size: 2.4rem;

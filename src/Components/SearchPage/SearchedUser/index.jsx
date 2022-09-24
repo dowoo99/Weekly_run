@@ -4,28 +4,33 @@ import { useQuery } from "react-query";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Profile from "../../../Icons/myPageProfile.svg";
+import useQueryDebounce from "../../../Hooks/useQueryDebounce";
 
-const SearchedUser = ({ searhValue }) => {
+const SearchedUser = ({ searchTag }) => {
   const navigate = useNavigate();
 
+  const debounceSearch = useQueryDebounce(searchTag, 500);
+
   const getSearchUser = async () => {
-    const { data } = await instance.get(`/api/user/search?nickname=${searhValue}`);
+    const { data } = await instance.get(`/api/user/search?nickname=${debounceSearch}`);
     return data;
   };
 
-  const { data } = useQuery(["searchUser", searhValue], getSearchUser, {
-    enabled: !!searhValue
+  const { data } = useQuery(["searchUser", debounceSearch], getSearchUser, {
+    enabled: !!debounceSearch
   });
 
-  const navUserPage = nickname => {
-    navigate(`/user/${nickname}`);
+  const navUserPage = (nickname, userId) => {
+    navigate(`/user/${nickname}`, {
+      state: { userId: userId }
+    });
   };
 
   return (
     <>
       {data?.map(user => {
         return (
-          <SearchUserWrap key={user.nickname} onClick={() => navUserPage(user.nickname)}>
+          <SearchUserWrap key={user.nickname} onClick={() => navUserPage(user.nickname, user.userId)}>
             {user.profile ? <img src={user.profile} /> : <img src={Profile} />}
             <div>{user.nickname}</div>
           </SearchUserWrap>
