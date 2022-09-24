@@ -79,7 +79,7 @@ const Search = () => {
           태그
         </TapButton>
       </TapWrap>
-      {selectedTab === "유저" && <SearchedUser searhValue={searhValue} />}
+      {selectedTab === "유저" && <SearchedUser searchTag={searchTag} />}
       {selectedTab === "태그" && <SearchedHashTag searhValue={searhValue} />}
     </Layout>
   );
@@ -116,6 +116,7 @@ const TapWrap = styled.div`
 const TapButton = styled.button`
   width: 18.8rem;
   border: none;
+  color: black;
   background: #ffffff;
   border-bottom: 0.1rem solid #333333;
 `;

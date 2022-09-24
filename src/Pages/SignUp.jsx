@@ -1,8 +1,8 @@
-import ProfileUpload from "../Components/Signup/profileUpload"
+import ProfileUpload from "../Components/Signup/profileUpload";
 
-import {useLocation, useNavigate} from "react-router-dom"
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-
+import { ReactComponent as Logo } from "../Icons/LoginLogo.svg";
 
 const SignUp = () => {
   const location = useLocation();
@@ -10,7 +10,7 @@ const SignUp = () => {
   return (
     <>
       <SignUpLogo>
-        <p>RUNBLE</p>
+        <Logo />
       </SignUpLogo>
       <ProfileUpload userData={data} />
     </>
@@ -24,13 +24,10 @@ const SignUpLogo = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 9.6rem;
-  margin-bottom: 13.8rem;
-  & > P {
-    height: 3.2rem;
-    font-weight: 900;
-    font-size: 2.4rem;
-    line-height: 3.2rem;
-    color: #353434;
+  height: 4.6rem;
+  padding-top: 5rem;
+  margin-bottom: 12rem;
+  & :first-child {
+    width: 45%;
   }
 `;

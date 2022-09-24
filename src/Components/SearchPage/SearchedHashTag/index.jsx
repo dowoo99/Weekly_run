@@ -83,6 +83,7 @@ const ButtonWrap = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
+  color: black;
 
   & button {
     border: none;

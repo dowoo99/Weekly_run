@@ -40,7 +40,7 @@ const RunningMap = ({ stopInterval, endRun }) => {
   const getDistanceQuery = useMutation(location => getDistance(location), {
     onSuccess: data => {
       if (data >= 0) {
-        setDistance(prev => ((prev + data) / 1000)?.toFixed(1));
+        setDistance(prev => prev + 600);
       }
     }
   });
@@ -58,14 +58,15 @@ const RunningMap = ({ stopInterval, endRun }) => {
             isLoading: true
           });
         },
-        error => {},
+        error => {
+          console.error(error);
+        },
         { enableHighAccuracy: true, maximumAge: 0 }
       );
       getDistanceQuery.mutate(state.center);
     } else {
       setState(prev => ({
         ...prev,
-        errMsg: "현재 위치를 표시할 수 없어요.",
         isLoading: false
       }));
     }
@@ -97,7 +98,6 @@ const RunningMap = ({ stopInterval, endRun }) => {
       } else {
         setState(prev => ({
           ...prev,
-          errMsg: "현재 위치를 표시할 수 없어요.",
           isLoading: false
         }));
       }
@@ -110,7 +110,7 @@ const RunningMap = ({ stopInterval, endRun }) => {
     if (endRun) {
       setPath(prev => ({
         ...prev,
-        distance,
+        distance: Number((distance / 1000).toFixed(1)),
         isFinish: true
       }));
     }
@@ -138,17 +138,17 @@ const RunningMap = ({ stopInterval, endRun }) => {
           height: "100vh"
         }}
         level={2}
-        zoomable={false}
-        draggable={false}
+        zoomable={true}
+        draggable={true}
       >
-        <MapMarker position={state.center} image={{ src: Marker, size: { width: 36, height: 36 } }} />
         <Polyline
           path={runLog.path}
-          strokeWeight={7}
-          strokeColor={"##F03800"}
-          strokeOpacity={0.7}
+          strokeWeight={10}
+          strokeColor={"#F03800"}
+          strokeOpacity={0.9}
           strokeStyle={"solid"}
         />
+        <MapMarker position={state.center} image={{ src: Marker, size: { width: 36, height: 36 } }} />
       </Map>
     </Body>
   );
