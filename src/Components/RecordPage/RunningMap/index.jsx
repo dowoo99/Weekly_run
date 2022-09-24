@@ -27,8 +27,6 @@ const RunningMap = ({ stopInterval, endRun }) => {
     isLoading: false
   });
 
-  console.log(runLog.path);
-
   const getDistance = async location => {
     try {
       const res = await instance.post("/api/user/location", location);

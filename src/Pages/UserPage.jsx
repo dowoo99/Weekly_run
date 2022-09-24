@@ -27,7 +27,6 @@ const UserPage = () => {
   const { data: goalData } = useProgress(userIds); //user 목표보여주기
   const { data: userData } = useGetUserData(userIds);
 
-  console.log(userIds);
   useEffect(() => {
     if (state?.userId === undefined) {
       SetUserId(userId);
