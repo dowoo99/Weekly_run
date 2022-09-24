@@ -102,7 +102,7 @@ const RunningMap = ({ stopInterval, endRun }) => {
         }));
       }
     },
-    stopInterval ? null : 5000
+    stopInterval ? null : 4000
   );
 
   //기록하기

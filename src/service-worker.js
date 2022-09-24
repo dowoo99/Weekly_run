@@ -7,7 +7,7 @@
 // You can also remove this file if you'd prefer not to use a
 // service worker, and the Workbox build step will be skipped.
 
-import { clientsClaim } from "workbox-core";
+import { cacheNames, clientsClaim } from "workbox-core";
 import { ExpirationPlugin } from "workbox-expiration";
 import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
@@ -73,27 +73,28 @@ self.addEventListener("message", event => {
 
 const CACHE_DYNAMIC_NAME = "dynamic-location";
 
+let cacheData = [];
 self.addEventListener("fetch", event => {
   event.respondWith(
     caches.match(event.request).then(response => {
-      ///캐시에 있으면 그대로 돌려준다
-      if (response) {
-        return response;
-      }
       let fetchRequest = event.request.clone();
-
-      return fetch(fetchRequest).then(response => {
-        if (!response) {
-          return response;
-        }
-
-        let responseToCache = response.clone();
-
-        caches.open(CACHE_DYNAMIC_NAME).then(cache => {
-          cache.put(event.request, responseToCache);
-        });
-        return response;
+      cacheData.push(fetchRequest);
+      caches.open(CACHE_DYNAMIC_NAME).then(cache => {
+        cache.put(event.request.cacheData);
       });
+      return response;
+    })
+  );
+});
+
+self.addEventListener("active", event => {
+  event.waitUntill(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          return caches.delete(cacheName);
+        })
+      );
     })
   );
 });
