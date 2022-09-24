@@ -79,4 +79,10 @@ const RankList = styled.table`
   & td:last-child {
     width: 10rem;
   }
+
+  & img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
 `;
