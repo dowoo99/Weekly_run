@@ -58,7 +58,7 @@ const Record = () => {
   const onClickEnd = useCallback(async () => {
     setEndRun(true);
     setStopInterval(true);
-    if (Number((runLog.distanc / 1000).toFixed(1)) <= 0) {
+    if (runLog.distance <= 0) {
       setNoRecord(true);
     }
   });
