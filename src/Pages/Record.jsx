@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import styled from "styled-components";
 import { useRecoilValue, useRecoilState } from "recoil";
 
@@ -19,8 +19,12 @@ const Record = () => {
   const [showModal, setShowModal] = useState(true);
   const [start, setStart] = useState(false);
   const [noRecord, setNoRecord] = useState(false);
+  const [goal, setGoal] = useState("");
+  const [showGoalModal, setShowGoalModal] = useState(false);
   const [path, setPath] = useRecoilState(runData);
   const runLog = useRecoilValue(runData);
+
+  const userNickname = JSON.parse(localStorage.getItem("userData")).nickname;
 
   const navigate = useNavigate();
 
@@ -54,17 +58,19 @@ const Record = () => {
   const onClickEnd = useCallback(async () => {
     setEndRun(true);
     setStopInterval(true);
-    if (Number(runLog.distance) <= 0) {
+    if (Number((runLog.distanc / 1000).toFixed(1)) <= 0) {
       setNoRecord(true);
     }
   });
 
   const onFeed = async () => {
     if (runLog.isFinish) {
-      const { data } = await instance.post("/api/user/distance", {
-        distance: Number(runLog.distance),
-        time: totalTime
-      });
+      if (goal) {
+        const { data } = await instance.post("/api/user/distance", {
+          distance: runLog.distance,
+          time: totalTime
+        });
+      }
       clearPath();
       navigate("/post", { state: { runLog } });
     }
@@ -72,24 +78,47 @@ const Record = () => {
 
   const onNotFeed = async () => {
     if (runLog.isFinish) {
-      const { data } = await instance.post("/api/user/distance", {
-        distance: Number(runLog.distance),
-        time: totalTime
-      });
+      if (goal) {
+        const { data } = await instance.post("/api/user/distance", {
+          distance: runLog.distance,
+          time: totalTime
+        });
+      }
       clearPath();
       navigate("/feed");
     }
   };
 
-  const onClickYes = () => {
+  const onClickContinue = () => {
     setEndRun(false);
     setNoRecord(false);
   };
 
-  const onClickNo = () => {
+  const onClickNoContinue = () => {
     clearPath();
     navigate("/feed");
   };
+
+  const onClickGoalYes = useCallback(() => {
+    navigate(`/user/${userNickname}`);
+  }, []);
+
+  const onClickGoalNo = useCallback(() => {
+    setShowGoalModal(false);
+  }, []);
+
+  useEffect(() => {
+    async function getSetGoal() {
+      const res = await instance.get("/api/user/goal");
+      setGoal(res.data.goal);
+      if (!res.data.goal) {
+        setShowGoalModal(true);
+      } else {
+        setGoal(true);
+      }
+    }
+    getSetGoal();
+  }, []);
 
   return (
     <>
@@ -97,7 +126,7 @@ const Record = () => {
       {start && (
         <RecordHeader>
           <HeaderWrap>
-            <RunDistance>{runLog.distance}km</RunDistance>
+            <RunDistance>{(runLog.distance / 1000)?.toFixed(1)}km</RunDistance>
             <RunTimer stopInterval={stopInterval} endRun={endRun} />
           </HeaderWrap>
         </RecordHeader>
@@ -123,11 +152,19 @@ const Record = () => {
         </Modal>
       )}
       {noRecord && (
-        <Modal onClickYes={onClickYes} onClickNo={onClickNo}>
+        <Modal onClickYes={onClickContinue} onClickNo={onClickNoContinue}>
           <p>
             100m이하의 기록은 기록하실 수 없어요
             <br />
             이어하시겠어요?
+          </p>
+        </Modal>
+      )}
+      {showGoalModal && (
+        <Modal onClickYes={onClickGoalYes} onClickNo={onClickGoalNo}>
+          <p>
+            목표 설정을 안하면 기록이 저장되지 않아요 <br />
+            목표를 설정하시겠어요?
           </p>
         </Modal>
       )}

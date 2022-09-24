@@ -20,15 +20,19 @@ const SearchedUser = ({ searchTag }) => {
     enabled: !!debounceSearch
   });
 
-  const navUserPage = nickname => {
-    navigate(`/user/${nickname}`);
+  const navUserPage = (nickname, userId) => {
+    navigate(`/user/${nickname}`, {
+      state: { userId: userId }
+    });
   };
+
+  console.log(data);
 
   return (
     <>
       {data?.map(user => {
         return (
-          <SearchUserWrap key={user.nickname} onClick={() => navUserPage(user.nickname)}>
+          <SearchUserWrap key={user.nickname} onClick={() => navUserPage(user.nickname, user.userId)}>
             {user.profile ? <img src={user.profile} /> : <img src={Profile} />}
             <div>{user.nickname}</div>
           </SearchUserWrap>
