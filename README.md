@@ -88,11 +88,11 @@
 # 트러블 슈팅
 <details>
   <summary> 좋아요 기능react-query optimistic update낙관적 업데이트로 서버업데이트시 UI에서도 어차피 업데이트 할것이란 (낙관적인) 가정으로 미리 UI를 업데이트 시켜주고 서버를 통해 검증을 받고 업데이트 Or 롤백하는 방식이다.</summary>
-  <div markdown="1">
-    
-    
+  <div markdown="">
+
   invalidateQueries를 이용해서, 좋아요를 누를시 바껴야하는 query key들을 초기화를 시켜 화면에서 바로바로 적용키여야함
-     자세한 내용은 https://velog.io/@dowoo99/react-queryoptimistic-update  에서 확인 가능합니다.
+     자세한 내용은 https://velog.io/@dowoo99/react-queryoptimistic-update%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85  에서 확인 가능합니다.
+    
   </div>
 </details>
 
