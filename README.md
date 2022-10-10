@@ -86,6 +86,7 @@
   예기치 못한 버그를 쉽게 일으키던 유령 의존성 현상을 근본적으로 막을 수 있다.
 
 # 트러블 슈팅
+
 <details>
   <summary> 좋아요 기능 react-query optimistic update낙관적 업데이트로 서버업데이트시 UI에서도 어차피 업데이트 할것이란 (낙관적인) 가정으로 미리 UI를 업데이트를 해줌</summary>
   <div markdown="1">
@@ -93,6 +94,16 @@
   invalidateQueries를 이용해서, 좋아요를 누를시 바껴야하는 query key들을 초기화를 시켜 화면에서 바로바로 적용키여야함
      자세한 내용은 https://velog.io/@dowoo99/react-queryoptimistic-update%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85  에서 확인 가능합니다.
     
+  </div>
+</details>
+
+<details>
+  <summary>위치를 불러오는 함수와 시간 타이머 함수를 시작 버튼 ,정지 버튼 및 종료 버튼을 이용하여 제어할 수 있어야하며, 일정한 시간 간격으로 함수가 작동해야함</summary>
+  <div markdown="1">
+
+    useInterval 커스텀 훅을 사용하여, callback 함수와 delay를 파라미터로 넘겨 delay가 null일 경우 함수가 중단됨
+     자세한 내용은 https://velog.io/@dae_eun2/React-useInterval 에서 확인 가능합니다.
+
   </div>
 </details>
 
